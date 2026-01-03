@@ -19,8 +19,8 @@ Calm and focused, not noisy
 
 Every element is designed to reduce cognitive load while increasing execution speed.
 
-🧠 Core Concepts
-🔹 Smart Action Tiles
+#🧠 Core Concepts
+#🔹 Smart Action Tiles
 
 Each tile is a self-contained productivity unit capable of:
 
@@ -32,7 +32,7 @@ Conditional logic based on time, context, or system state
 
 Visual countdowns, urgency indicators, and live status updates
 
-🔹 Advanced Scheduling Engine
+#🔹 Advanced Scheduling Engine
 
 Precise time-based and recurring alerts
 
@@ -42,7 +42,7 @@ Persistent critical alerts that demand acknowledgment
 
 Snooze and acknowledge system designed for real-world usage
 
-🔹 Workflow Automation
+#🔹 Workflow Automation
 
 Trigger entire workflows with a single interaction:
 
@@ -54,7 +54,7 @@ Start focus sessions
 
 Execute chained actions seamlessly
 
-🔹 Focus & Attention Control
+#🔹 Focus & Attention Control
 
 Hyper-Focus Mode to eliminate distractions
 
@@ -62,7 +62,7 @@ Smart notification triage to prevent alert overload
 
 Priority-aware UI that guides attention naturally
 
-🎨 Premium UI / UX Philosophy
+#🎨 Premium UI / UX Philosophy
 
 VIP Stream Deck is designed to feel luxurious and intentional:
 
@@ -78,7 +78,7 @@ Calm dark-first design language
 
 The interface is not decorative — it is functional, expressive, and confidence-inspiring.
 
-🤖 AI-Assisted Intelligence (Vision)
+#🤖 AI-Assisted Intelligence (Vision)
 
 The system is designed to support advanced AI capabilities, including:
 
@@ -94,7 +94,7 @@ Non-intrusive AI assistant guidance
 
 These features are meant to support the user, not distract them.
 
-🧩 Platform & Architecture Goals
+#🧩 Platform & Architecture Goals
 
 Desktop-first application (Windows initial target)
 
@@ -108,7 +108,7 @@ High performance and low resource usage
 
 Modular, extensible architecture
 
-🎯 Project Goals
+#🎯 Project Goals
 
 Replace multiple productivity tools with one unified system
 
@@ -118,12 +118,12 @@ Deliver a calm, reliable, and satisfying daily workflow
 
 Create software that users trust with critical schedules
 
-🚧 Project Status
+# 🚧 Project Status
 
 This project is under active design and development.
 The repository focuses on:
 
-Architecture planning
+## Architecture planning
 
 UX / UI design principles
 
@@ -133,7 +133,7 @@ AI-ready system design
 
 Contributions, discussions, and architectural feedback are welcome.
 
-🌟 Vision
+#🌟 Vision
 
 VIP Stream Deck is not just an app.
 It is a personal command center, a quiet assistant, and a productivity partner — built to adapt to humans, not force humans to adapt to software.

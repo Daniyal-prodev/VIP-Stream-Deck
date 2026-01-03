@@ -1,0 +1,8 @@
+{
+    "appId": "com.vip.streamdeck",
+    "productName": "VIP Stream Deck",
+    "win": {
+      "target": "nsis"
+    }
+  }
+  

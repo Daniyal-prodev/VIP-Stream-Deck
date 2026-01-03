@@ -1,0 +1,53 @@
+{
+    "name": "Work",
+    "tiles": [
+        {
+            "id": 1,
+            "name": "Slack",
+            "icon": "MessageSquare",
+            "color": "text-blue-500",
+            "actions": [
+                {
+                    "type": "log",
+                    "value": "Opening Slack"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "VS Code",
+            "icon": "Terminal",
+            "color": "text-blue-400",
+            "actions": [
+                {
+                    "type": "log",
+                    "value": "Opening VS Code"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Email",
+            "icon": "Mail",
+            "color": "text-white",
+            "actions": [
+                {
+                    "type": "log",
+                    "value": "Checking Email"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Meeting",
+            "icon": "Video",
+            "color": "text-green-500",
+            "actions": [
+                {
+                    "type": "log",
+                    "value": "Joining Meeting"
+                }
+            ]
+        }
+    ]
+}

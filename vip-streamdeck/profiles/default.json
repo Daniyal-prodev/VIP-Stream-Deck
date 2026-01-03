@@ -1,0 +1,189 @@
+{
+    "name": "Default",
+    "tiles": [
+        {
+            "id": 1,
+            "name": "Focus Mode",
+            "icon": "Maximize2",
+            "hotkey": "CommandOrControl+Shift+1",
+            "color": "text-purple-400",
+            "actions": [
+                {
+                    "type": "ui",
+                    "action": "toggleHyperFocus"
+                },
+                {
+                    "type": "log",
+                    "value": "Entered Hyper Focus"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Spotify",
+            "icon": "Music",
+            "color": "text-green-500",
+            "actions": [
+                {
+                    "type": "url",
+                    "value": "https://open.spotify.com"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "WhatsApp",
+            "icon": "MessageSquare",
+            "color": "text-emerald-400",
+            "actions": [
+                {
+                    "type": "url",
+                    "value": "https://web.whatsapp.com"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Terminal",
+            "icon": "Terminal",
+            "color": "text-yellow-400",
+            "actions": [
+                {
+                    "type": "app",
+                    "value": "terminal"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Chrome",
+            "icon": "Chrome",
+            "color": "text-blue-400",
+            "actions": [
+                {
+                    "type": "app",
+                    "value": "chrome"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "GitHub",
+            "icon": "Github",
+            "color": "text-white",
+            "actions": [
+                {
+                    "type": "url",
+                    "value": "https://github.com"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "YouTube",
+            "icon": "Youtube",
+            "color": "text-red-500",
+            "actions": [
+                {
+                    "type": "url",
+                    "value": "https://youtube.com"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Mixer",
+            "icon": "Volume2",
+            "color": "text-purple-400",
+            "actions": [
+                {
+                    "type": "app",
+                    "value": "sndvol"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Calculator",
+            "icon": "Clock",
+            "color": "text-cyan-400",
+            "actions": [
+                {
+                    "type": "app",
+                    "value": "calc"
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "name": "Gmail",
+            "icon": "Layout",
+            "color": "text-orange-400",
+            "actions": [
+                {
+                    "type": "url",
+                    "value": "https://mail.google.com"
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "name": "Monitor",
+            "icon": "Monitor",
+            "color": "text-indigo-400",
+            "actions": [
+                {
+                    "type": "log",
+                    "value": "Performance monitoring active"
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "name": "Tools",
+            "icon": "Settings",
+            "color": "text-gray-400",
+            "type": "folder",
+            "children": [
+                {
+                    "id": "12-1",
+                    "name": "Clean Up",
+                    "icon": "Trash",
+                    "color": "text-red-400",
+                    "actions": [
+                        {
+                            "type": "log",
+                            "value": "Cleanup triggered"
+                        }
+                    ]
+                },
+                {
+                    "id": "12-2",
+                    "name": "Update",
+                    "icon": "RefreshCw",
+                    "color": "text-blue-400",
+                    "actions": [
+                        {
+                            "type": "log",
+                            "value": "Update triggered"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "schedules": [],
+    "leftSidebarOrder": [
+        "SmartTriage",
+        "AIConflictResolver",
+        "EnergyPeakTime"
+    ],
+    "rightSidebarOrder": [
+        "MoodDetection",
+        "SchedulePanel",
+        "NetworkStatus",
+        "GamificationRewards",
+        "VoiceCommand"
+    ],
+    "collapsedPanels": {}
+}

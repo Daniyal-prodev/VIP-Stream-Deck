@@ -174,10 +174,17 @@ const MoodDetectionPanel = () => (
             <span className="side-panel-title">Mood Detection</span>
         </div>
         <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+            {/* Face Avatar */}
             <div className="relative">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center overflow-hidden">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
-                        <Eye size={16} className="text-white" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ffd5c8] to-[#f5c4b8] relative">
+                        {/* Hair */}
+                        <div className="absolute -top-1 -left-0.5 -right-0.5 h-5 bg-gradient-to-br from-blue-800 to-blue-600 rounded-t-full" />
+                        {/* Eyes */}
+                        <div className="absolute top-4 left-1.5 w-1.5 h-1.5 bg-blue-900 rounded-full" />
+                        <div className="absolute top-4 right-1.5 w-1.5 h-1.5 bg-blue-900 rounded-full" />
+                        {/* Smile */}
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-2 h-1 border-b-2 border-pink-400 rounded-b-full" />
                     </div>
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-deck-dark" />
@@ -226,13 +233,25 @@ const VoiceInteractionPanel = () => (
             <span className="side-panel-title">Voice Interaction</span>
         </div>
         <div className="flex gap-3">
+            {/* AI Avatar Character */}
             <div className="relative flex-shrink-0">
                 <div className="ai-avatar-glow" />
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center overflow-hidden relative z-10">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
-                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                            <Mic size={16} className="text-white" />
-                        </div>
+                <div className="w-16 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex flex-col items-center justify-end overflow-hidden relative z-10 pb-1">
+                    {/* Avatar Face */}
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ffd5c8] to-[#f5c4b8] relative mb-1">
+                        {/* Hair */}
+                        <div className="absolute -top-2 -left-1 -right-1 h-8 bg-gradient-to-br from-blue-800 to-blue-600 rounded-t-full" />
+                        <div className="absolute top-4 left-1 w-2 h-4 bg-gradient-to-b from-blue-700 to-blue-500 rounded-b-full" />
+                        <div className="absolute top-4 right-1 w-2 h-4 bg-gradient-to-b from-blue-700 to-blue-500 rounded-b-full" />
+                        {/* Eyes */}
+                        <div className="absolute top-5 left-2 w-2 h-2 bg-blue-900 rounded-full" />
+                        <div className="absolute top-5 right-2 w-2 h-2 bg-blue-900 rounded-full" />
+                        {/* Smile */}
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3 h-1.5 border-b-2 border-pink-400 rounded-b-full" />
+                    </div>
+                    {/* Headset */}
+                    <div className="absolute top-6 -right-0.5 w-3 h-3 bg-cyan-400 rounded-full flex items-center justify-center">
+                        <Mic size={6} className="text-white" />
                     </div>
                 </div>
             </div>
@@ -657,8 +676,21 @@ function App() {
             window.electronAPI = {
                 getProfiles: async () => ['default', 'work'],
                 loadProfile: async (name) => {
-                    const response = await fetch(`/profiles/${name}.json`);
-                    return await response.json();
+                    // Return mock profile data for browser testing
+                    return {
+                        name: name,
+                        tiles: [
+                            { id: 'tile-1', name: 'Email', icon: 'Mail', actions: [{ type: 'log', value: 'Email clicked' }] },
+                            { id: 'tile-2', name: 'Focus', icon: 'Eye', actions: [{ type: 'log', value: 'Focus clicked' }] },
+                            { id: 'tile-3', name: 'Break', icon: 'Coffee', actions: [{ type: 'log', value: 'Break clicked' }] },
+                            { id: 'tile-4', name: 'Tasks', icon: 'CheckCircle', actions: [{ type: 'log', value: 'Tasks clicked' }] },
+                            { id: 'tile-5', name: 'Calendar', icon: 'Calendar', actions: [{ type: 'log', value: 'Calendar clicked' }] },
+                            { id: 'tile-6', name: 'Notes', icon: 'FileText', actions: [{ type: 'log', value: 'Notes clicked' }] },
+                            { id: 'tile-7', name: 'Stream', icon: 'Play', actions: [{ type: 'log', value: 'Stream clicked' }] },
+                            { id: 'tile-8', name: 'Schedule', icon: 'Brain', actions: [{ type: 'log', value: 'Schedule clicked' }] },
+                        ],
+                        schedules: []
+                    };
                 },
                 executeAction: async (action) => {
                     console.log("Mock Execute Action:", action);
@@ -962,11 +994,14 @@ function App() {
             {/* Main Content */}
             <div className="flex-1 flex gap-4 px-4 pb-4 relative z-10 overflow-hidden">
                 {/* Left Sidebar */}
-                <aside className="w-72 flex flex-col gap-3 overflow-y-auto custom-scroll">
+                <aside className="w-64 flex flex-col gap-3 overflow-y-auto custom-scroll">
                     <SmartNotificationTriage />
                     <AIConflictResolverPanel />
                     <EnergyPeakTimePanel />
-                    <WorkflowAutomationPanel />
+                    {/* Workflow Automation at bottom left */}
+                    <div className="mt-auto">
+                        <WorkflowAutomationPanel />
+                    </div>
                 </aside>
 
                 {/* Center Content */}
@@ -1035,75 +1070,36 @@ function App() {
                             </button>
                         )}
 
-                        {/* Productivity Grid */}
-                        <div className="grid grid-cols-4 gap-3 relative z-10 overflow-y-auto custom-scroll" style={{ maxHeight: 'calc(100% - 80px)' }}>
-                            {currentTiles.length > 0 ? (
-                                <DndContext
-                                    sensors={sensors}
-                                    collisionDetection={closestCenter}
-                                    onDragEnd={handleDragEnd}
-                                >
-                                    <SortableContext items={currentTiles} strategy={rectSortingStrategy}>
-                                        {currentTiles.map((tile) => (
-                                            <div key={tile.id} className="relative group">
-                                                <SortableTile
-                                                    tile={tile}
-                                                    volume={volume}
-                                                    onEnterFolder={() => enterFolder(tile)}
-                                                    onUiAction={handleUiAction}
-                                                />
-                                                {isEditMode && (
-                                                    <button
-                                                        onClick={() => setEditingTile(tile)}
-                                                        className="absolute -top-1 -right-1 p-1.5 bg-blue-500 text-white rounded-full shadow-lg z-20 hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100"
-                                                    >
-                                                        <Edit2 size={10} />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </SortableContext>
-                                </DndContext>
-                            ) : (
-                                <>
-                                    {productivityButtons.slice(0, 4).map(btn => (
-                                        <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
-                                    ))}
-                                    
-                                    <ProductivityButton button={productivityButtons[4]} onClick={() => {}} />
-                                    
-                                    {/* Timer Display */}
-                                    <div className="col-span-2 timer-display">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <Clock size={16} className="text-orange-400" />
-                                            <span className="text-xs text-white/50">Next Task in</span>
-                                        </div>
-                                        <div className="text-3xl font-bold text-orange-400 tracking-wider">{countdown}</div>
-                                    </div>
-                                    
-                                    <ProductivityButton button={productivityButtons[5]} onClick={() => {}} />
-                                    
-                                    {productivityButtons.slice(6).map(btn => (
-                                        <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
-                                    ))}
-                                </>
-                            )}
-
-                            {/* Add Button */}
-                            <motion.div
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => setIsAddingTile(true)}
-                                className="productivity-btn border-dashed border-white/20 hover:border-blue-500/50"
-                            >
-                                <Plus size={24} className="text-white/30" />
-                                <span className="text-[10px] text-white/30">Add Button</span>
-                            </motion.div>
+                        {/* Productivity Grid - Always show productivity buttons with timer */}
+                        <div className="grid grid-cols-4 gap-3 relative z-10">
+                            {/* Row 1: Email Workflow, Focus Mode, Quick Break, Quick Renner */}
+                            {productivityButtons.slice(0, 4).map(btn => (
+                                <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
+                            ))}
+                            
+                            {/* Row 2: Weekly Report, Timer (spans 2), Mood Schedule */}
+                            <ProductivityButton button={productivityButtons[4]} onClick={() => {}} />
+                            
+                            {/* Timer Display - Center of grid */}
+                            <div className="col-span-2 timer-display">
+                                <div className="flex items-center justify-center gap-2 mb-1">
+                                    <Clock size={18} className="text-blue-400" />
+                                    <span className="text-xs text-white/60">Next Task in</span>
+                                </div>
+                                <div className="text-4xl font-bold text-white tracking-wider">{countdown === '--:--' ? '05:32' : countdown}</div>
+                            </div>
+                            
+                            <ProductivityButton button={productivityButtons[5]} onClick={() => {}} />
+                            
+                            {/* Row 3: Start Stream, Smart Schedule, Start Webinar, Start Webinar */}
+                            {productivityButtons.slice(6).map(btn => (
+                                <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
+                            ))}
                         </div>
                     </div>
 
-                    {/* Bottom Panels */}
-                    <div className="flex gap-3">
+                    {/* Bottom Panels - 2x2 Grid Layout */}
+                    <div className="grid grid-cols-2 gap-3">
                         <PredictiveTaskDeck />
                         <FocusEnhancementPanel />
                         <InvacySchedulingPanel />

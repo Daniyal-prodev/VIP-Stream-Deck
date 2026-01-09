@@ -676,20 +676,25 @@ function App() {
             window.electronAPI = {
                 getProfiles: async () => ['default', 'work'],
                 loadProfile: async (name) => {
-                    // Return mock profile data for browser testing
+                    // Return mock profile data for browser testing with enterprise-ready actions
                     return {
                         name: name,
                         tiles: [
-                            { id: 'tile-1', name: 'Email', icon: 'Mail', actions: [{ type: 'log', value: 'Email clicked' }] },
-                            { id: 'tile-2', name: 'Focus', icon: 'Eye', actions: [{ type: 'log', value: 'Focus clicked' }] },
-                            { id: 'tile-3', name: 'Break', icon: 'Coffee', actions: [{ type: 'log', value: 'Break clicked' }] },
-                            { id: 'tile-4', name: 'Tasks', icon: 'CheckCircle', actions: [{ type: 'log', value: 'Tasks clicked' }] },
-                            { id: 'tile-5', name: 'Calendar', icon: 'Calendar', actions: [{ type: 'log', value: 'Calendar clicked' }] },
-                            { id: 'tile-6', name: 'Notes', icon: 'FileText', actions: [{ type: 'log', value: 'Notes clicked' }] },
-                            { id: 'tile-7', name: 'Stream', icon: 'Play', actions: [{ type: 'log', value: 'Stream clicked' }] },
-                            { id: 'tile-8', name: 'Schedule', icon: 'Brain', actions: [{ type: 'log', value: 'Schedule clicked' }] },
+                            { id: 'tile-1', name: 'Email Workflow', icon: 'Mail', color: 'blue', actions: [{ type: 'open', value: 'mailto:' }, { type: 'log', value: 'Opening email client' }] },
+                            { id: 'tile-2', name: 'Focus Mode', icon: 'Eye', color: 'blue', actions: [{ type: 'ui', action: 'focus-mode' }, { type: 'log', value: 'Focus mode activated' }] },
+                            { id: 'tile-3', name: 'Quick Break', icon: 'Coffee', color: 'orange', actions: [{ type: 'timer', duration: 300 }, { type: 'log', value: 'Break timer started' }] },
+                            { id: 'tile-4', name: 'Quick Renner', icon: 'Zap', color: 'orange', actions: [{ type: 'log', value: 'Quick task runner activated' }] },
+                            { id: 'tile-5', name: 'Weekly Report', icon: 'FileText', color: 'blue', actions: [{ type: 'log', value: 'Generating weekly report' }] },
+                            { id: 'tile-6', name: 'Mood Schedule', icon: 'Calendar', color: 'purple', actions: [{ type: 'log', value: 'Opening mood-based scheduler' }] },
+                            { id: 'tile-7', name: 'Start Stream', icon: 'Play', color: 'blue', actions: [{ type: 'log', value: 'Starting stream' }] },
+                            { id: 'tile-8', name: 'Smart Schedule', icon: 'Brain', color: 'cyan', actions: [{ type: 'log', value: 'AI scheduling activated' }] },
+                            { id: 'tile-9', name: 'Start Webinar', icon: 'Video', color: 'blue', actions: [{ type: 'log', value: 'Starting webinar' }] },
+                            { id: 'tile-10', name: 'Team Sync', icon: 'Users', color: 'green', actions: [{ type: 'log', value: 'Team sync initiated' }] },
                         ],
-                        schedules: []
+                        schedules: [
+                            { id: 'sched-1', title: 'Team Standup', startTime: '09:00', endTime: '09:30', completed: false },
+                            { id: 'sched-2', title: 'Project Review', startTime: '14:00', endTime: '15:00', completed: false },
+                        ]
                     };
                 },
                 executeAction: async (action) => {
@@ -1070,17 +1075,36 @@ function App() {
                             </button>
                         )}
 
-                        {/* Productivity Grid - Always show productivity buttons with timer */}
-                        <div className="grid grid-cols-4 gap-3 relative z-10">
-                            {/* Row 1: Email Workflow, Focus Mode, Quick Break, Quick Renner */}
-                            {productivityButtons.slice(0, 4).map(btn => (
-                                <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
-                            ))}
-                            
-                            {/* Row 2: Weekly Report, Timer (spans 2), Mood Schedule */}
-                            <ProductivityButton button={productivityButtons[4]} onClick={() => {}} />
-                            
-                            {/* Timer Display - Center of grid */}
+                        {/* Productivity Grid with User Tiles */}
+                        <div className="grid grid-cols-4 gap-3 relative z-10 overflow-y-auto custom-scroll" style={{ maxHeight: 'calc(100% - 80px)' }}>
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
+                            >
+                                <SortableContext items={currentTiles} strategy={rectSortingStrategy}>
+                                    {currentTiles.map((tile) => (
+                                        <div key={tile.id} className="relative group">
+                                            <SortableTile
+                                                tile={tile}
+                                                volume={volume}
+                                                onEnterFolder={() => enterFolder(tile)}
+                                                onUiAction={handleUiAction}
+                                            />
+                                            {isEditMode && (
+                                                <button
+                                                    onClick={() => setEditingTile(tile)}
+                                                    className="absolute -top-1 -right-1 p-1.5 bg-blue-500 text-white rounded-full shadow-lg z-20 hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100"
+                                                >
+                                                    <Edit2 size={10} />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
+
+                            {/* Timer Display */}
                             <div className="col-span-2 timer-display">
                                 <div className="flex items-center justify-center gap-2 mb-1">
                                     <Clock size={18} className="text-blue-400" />
@@ -1088,13 +1112,17 @@ function App() {
                                 </div>
                                 <div className="text-4xl font-bold text-white tracking-wider">{countdown === '--:--' ? '05:32' : countdown}</div>
                             </div>
-                            
-                            <ProductivityButton button={productivityButtons[5]} onClick={() => {}} />
-                            
-                            {/* Row 3: Start Stream, Smart Schedule, Start Webinar, Start Webinar */}
-                            {productivityButtons.slice(6).map(btn => (
-                                <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
-                            ))}
+
+                            {/* Add Button */}
+                            <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setIsAddingTile(true)}
+                                className="productivity-btn border-dashed border-white/20 hover:border-blue-500/50 cursor-pointer"
+                            >
+                                <Plus size={24} className="text-white/30" />
+                                <span className="text-[10px] text-white/30">Add Button</span>
+                            </motion.div>
                         </div>
                     </div>
 

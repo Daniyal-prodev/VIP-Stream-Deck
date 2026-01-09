@@ -3,23 +3,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import {
     Monitor,
-    Music,
-    MessageSquare,
+    Mail,
     Settings,
-    Cpu,
-    Terminal,
-    Layout,
     Volume2,
     Clock,
-    Chrome,
-    Github,
-    Youtube,
     ChevronDown,
+    ChevronRight,
     HelpCircle,
     Bell,
     Activity,
-    Maximize2,
-    Minimize2
+    Minimize2,
+    Plus,
+    Edit2,
+    ArrowLeft,
+    Coffee,
+    Zap,
+    FileText,
+    Calendar,
+    Video,
+    Play,
+    Brain,
+    Eye,
+    Smartphone,
+    Laptop,
+    Tablet,
+    Mic,
+    Heart,
+    CheckCircle,
+    RefreshCw,
+    AlertTriangle,
+    Battery,
+    Workflow
 } from 'lucide-react';
 
 // DnD Kit Imports
@@ -35,7 +49,6 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
     rectSortingStrategy,
     useSortable
 } from '@dnd-kit/sortable';
@@ -43,19 +56,280 @@ import { CSS } from '@dnd-kit/utilities';
 
 // Component/Panel Imports
 import AlertWindow from './components/AlertWindow';
-import FocusCompanion from './components/FocusCompanion';
-import SmartTriage from './components/panels/SmartTriage';
-import AIConflictResolver from './components/panels/AIConflictResolver';
-import EnergyPeakTime from './components/panels/EnergyPeakTime';
-import MoodDetection from './components/panels/MoodDetection';
-import GamificationRewards from './components/panels/GamificationRewards';
-import VoiceCommand from './components/panels/VoiceCommand';
-import NetworkStatus from './components/panels/NetworkStatus';
 import MiniDeck from './components/MiniDeck';
-import SchedulePanel from './components/panels/SchedulePanel';
 import TileEditor from './components/TileEditor';
 import SettingsModal from './components/SettingsModal';
-import { Plus, Edit2 } from 'lucide-react';
+
+// Productivity button definitions
+const productivityButtons = [
+    { id: 'email', name: 'Email Workflow', icon: Mail, color: 'blue' },
+    { id: 'focus', name: 'Focus Mode', icon: CheckCircle, color: 'blue' },
+    { id: 'break', name: 'Quick Break', icon: Coffee, color: 'orange' },
+    { id: 'renner', name: 'Quick Renner', icon: Zap, color: 'orange' },
+    { id: 'report', name: 'Weekly Report', icon: FileText, color: 'blue' },
+    { id: 'schedule', name: 'Mood Schedule', icon: Calendar, color: 'purple' },
+    { id: 'stream', name: 'Start Stream', icon: Play, color: 'blue' },
+    { id: 'smart', name: 'Smart Schedule', icon: Brain, color: 'cyan' },
+    { id: 'webinar1', name: 'Start Webinar', icon: Video, color: 'blue' },
+    { id: 'webinar2', name: 'Start Webinar', icon: Video, color: 'blue' },
+];
+
+// New Panel Components for VIP Productivity Deck Theme
+const SmartNotificationTriage = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Bell size={12} className="text-green-400" />
+            </div>
+            <span className="side-panel-title">Smart Notification Triage</span>
+        </div>
+        <div className="space-y-2">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-xs text-white/70">Important Alert Only</span>
+                <div className="ml-auto w-5 h-5 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <AlertTriangle size={10} className="text-yellow-400" />
+                </div>
+            </div>
+            <div className="px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                <span className="text-xs text-blue-400">4 Notifications Filtered</span>
+            </div>
+        </div>
+    </div>
+);
+
+const AIConflictResolverPanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <AlertTriangle size={12} className="text-orange-400" />
+            </div>
+            <span className="side-panel-title">AI Conflict Resolver</span>
+            <ChevronDown size={14} className="text-white/40 ml-auto" />
+        </div>
+        <div className="space-y-2">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-xs text-white/70">Schedule Conflict Detected</span>
+                <ChevronRight size={14} className="text-white/40 ml-auto" />
+            </div>
+            <div className="flex gap-2">
+                <button className="btn-primary flex-1">Reschedule</button>
+                <button className="btn-orange flex-1">Auto-Resolve</button>
+            </div>
+        </div>
+    </div>
+);
+
+const EnergyPeakTimePanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                <Battery size={12} className="text-cyan-400" />
+            </div>
+            <span className="side-panel-title">Energy Peak Time</span>
+        </div>
+        <div className="space-y-2">
+            <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-xs text-white/70">Optimal Productivity Now:</span>
+                <span className="text-xs text-cyan-400 font-medium">Now</span>
+                <ChevronRight size={14} className="text-cyan-400" />
+            </div>
+            <div className="px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
+                <span className="text-xs text-green-400">Suggestions Ready</span>
+            </div>
+        </div>
+    </div>
+);
+
+const WorkflowAutomationPanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <Settings size={12} className="text-purple-400" />
+            </div>
+            <span className="side-panel-title">Workflow Automation</span>
+        </div>
+        <div className="space-y-2">
+            <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-xs text-white/70">Multi-Step Task Sequences</span>
+            </div>
+            <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                    <Play size={14} className="text-orange-400" />
+                </div>
+                <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <Brain size={14} className="text-blue-400" />
+                </div>
+                <span className="text-[10px] text-white/50 ml-1">AI Profiles</span>
+            </div>
+        </div>
+    </div>
+);
+
+const MoodDetectionPanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-pink-500/20 flex items-center justify-center">
+                <Heart size={12} className="text-pink-400" />
+            </div>
+            <span className="side-panel-title">Mood Detection</span>
+        </div>
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+            <div className="relative">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                        <Eye size={16} className="text-white" />
+                    </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-deck-dark" />
+            </div>
+            <div className="flex-1">
+                <div className="text-xs text-white/70">Mood:</div>
+                <div className="text-sm font-medium text-white">Focused</div>
+            </div>
+            <div className="flex flex-col gap-1">
+                <span className="badge badge-purple text-[8px]">Attention</span>
+                <span className="badge badge-blue text-[8px]">UI Adapting</span>
+            </div>
+        </div>
+    </div>
+);
+
+const CrossDeviceSyncPanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <RefreshCw size={12} className="text-blue-400" />
+            </div>
+            <span className="side-panel-title">Cross-Device Sync</span>
+        </div>
+        <div className="flex items-center justify-center gap-4 py-3">
+            <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                <Monitor size={18} className="text-blue-400" />
+            </div>
+            <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                <Tablet size={18} className="text-green-400" />
+            </div>
+            <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                <Laptop size={18} className="text-purple-400" />
+            </div>
+        </div>
+        <div className="text-center text-[10px] text-white/50">All Devices Connected</div>
+    </div>
+);
+
+const VoiceInteractionPanel = () => (
+    <div className="side-panel">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                <Mic size={12} className="text-cyan-400" />
+            </div>
+            <span className="side-panel-title">Voice Interaction</span>
+        </div>
+        <div className="flex gap-3">
+            <div className="relative flex-shrink-0">
+                <div className="ai-avatar-glow" />
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center overflow-hidden relative z-10">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                            <Mic size={16} className="text-white" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="flex-1 flex flex-col justify-center gap-2">
+                <div className="text-xs text-cyan-400 animate-pulse">Listening...</div>
+                <div className="px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/30">
+                    <span className="text-[10px] text-purple-400">Schedule Meeting</span>
+                </div>
+                <div className="text-[10px] text-white/50">How can I assist you today?</div>
+            </div>
+        </div>
+    </div>
+);
+
+const PredictiveTaskDeck = () => (
+    <div className="side-panel flex-1">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <Brain size={12} className="text-blue-400" />
+            </div>
+            <span className="side-panel-title">Predictive Task Deck</span>
+        </div>
+        <div className="flex items-center gap-2">
+            <CheckCircle size={14} className="text-blue-400" />
+            <span className="text-xs text-white/70">AI-Powered Button Reordering</span>
+        </div>
+    </div>
+);
+
+const FocusEnhancementPanel = () => (
+    <div className="side-panel flex-1">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                <Eye size={12} className="text-cyan-400" />
+            </div>
+            <span className="side-panel-title">Focus Enhancement</span>
+        </div>
+        <div className="flex items-center gap-2">
+            <Mail size={14} className="text-purple-400" />
+            <span className="text-xs text-white/70">Distraction Blocking & Ambient Sound</span>
+        </div>
+    </div>
+);
+
+const InvacySchedulingPanel = () => (
+    <div className="side-panel flex-1">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-pink-500/20 flex items-center justify-center">
+                <Calendar size={12} className="text-pink-400" />
+            </div>
+            <span className="side-panel-title">Invacy Scheduling</span>
+        </div>
+        <div className="flex items-center gap-2">
+            <Heart size={14} className="text-pink-400" />
+            <span className="text-xs text-white/70">AI-Pos Coneder Butternice Beterims</span>
+        </div>
+    </div>
+);
+
+const AdvancedSchedulingPanel = () => (
+    <div className="side-panel flex-1">
+        <div className="side-panel-header">
+            <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center">
+                <Heart size={12} className="text-red-400" />
+            </div>
+            <span className="side-panel-title">Advanced Scheduling</span>
+        </div>
+        <div className="flex items-center gap-2">
+            <Heart size={14} className="text-red-400" />
+            <span className="text-xs text-white/70">Priority & Context-Aware Alerts</span>
+        </div>
+    </div>
+);
+
+const ProductivityButton = ({ button, onClick }) => {
+    const Icon = button.icon;
+    const colorClasses = {
+        blue: 'text-blue-400 border-blue-500/30 hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]',
+        orange: 'text-orange-400 border-orange-500/30 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.2)]',
+        purple: 'text-purple-400 border-purple-500/30 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]',
+        cyan: 'text-cyan-400 border-cyan-500/30 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]',
+    };
+
+    return (
+        <motion.button
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onClick}
+            className={`productivity-btn ${colorClasses[button.color] || colorClasses.blue}`}
+        >
+            <Icon size={24} strokeWidth={1.5} />
+            <span className="text-[10px] text-white/70 font-medium text-center leading-tight">
+                {button.name}
+            </span>
+        </motion.button>
+    );
+};
 
 const SortableTile = ({ tile, volume, onEnterFolder, onUiAction }) => {
     const {
@@ -74,7 +348,6 @@ const SortableTile = ({ tile, volume, onEnterFolder, onUiAction }) => {
     const Icon = LucideIcons[tile.icon] || HelpCircle;
     const isImage = tile.icon && (tile.icon.includes('.') || tile.icon.startsWith('http'));
 
-    // Check if countdown is active for this tile
     const [countdown, setCountdown] = useState(null);
 
     useEffect(() => {
@@ -130,43 +403,47 @@ const SortableTile = ({ tile, volume, onEnterFolder, onUiAction }) => {
         }
     };
 
+    const getBorderColor = () => {
+        if (tile.urgency === 'high') return 'border-red-500/50';
+        if (tile.urgency === 'medium') return 'border-orange-500/40';
+        return 'border-blue-500/20';
+    };
+
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <motion.div
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03, y: -3 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={handleClick}
-                className={`tile relative glass group cursor-pointer aspect-square rounded-3xl flex flex-col items-center justify-center gap-3 transition-colors hover:glass-hover overflow-hidden border shadow-2xl ${tile.urgency === 'high' ? 'border-red-500/50 shadow-red-900/20' : tile.urgency === 'medium' ? 'border-orange-500/40' : 'border-white/5'}`}
+                className={`productivity-btn relative group cursor-pointer ${getBorderColor()}`}
             >
-                <div className={`tile-glow ${tile.urgency === 'high' ? 'opacity-100 bg-red-500/30 animate-pulse' : tile.urgency === 'medium' ? 'opacity-70 bg-orange-500/20' : ''}`} />
+                <div className="tile-glow" />
 
                 {countdown && (
-                    <div className="absolute top-3 right-3 px-1.5 py-0.5 rounded-md bg-blue-500/80 text-[8px] font-bold text-white uppercase tracking-tighter">
+                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-orange-500/80 text-[9px] font-bold text-white">
                         {countdown}
                     </div>
                 )}
 
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`${tile.urgency === 'high' ? 'text-red-400' : tile.urgency === 'medium' ? 'text-orange-400' : tile.color || 'text-white/60'} transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_currentColor]`}
+                    className={`${tile.color || 'text-blue-400'} transition-all duration-300 group-hover:scale-110`}
                 >
                     {isImage ? (
-                        <img src={tile.icon} alt={tile.name} className="w-10 h-10 object-contain shadow-2xl" />
+                        <img src={tile.icon} alt={tile.name} className="w-8 h-8 object-contain" />
                     ) : (
-                        <Icon size={32} strokeWidth={1.5} />
+                        <Icon size={28} strokeWidth={1.5} />
                     )}
                 </motion.div>
-                <div className="flex flex-col items-center gap-1">
-                    <span className={`text-[9px] uppercase tracking-[0.2em] font-black group-hover:text-white transition-colors ${tile.urgency === 'high' ? 'text-red-400 animate-pulse' : 'text-white/40'}`}>
-                        {tile.name}
-                    </span>
-                    {tile.hotkey && (
-                        <div className="px-1.5 py-0.5 rounded-md bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-[7px] font-mono text-white/30 uppercase">{tile.hotkey.split('+').pop()}</span>
-                        </div>
-                    )}
-                </div>
+                <span className="text-[10px] text-white/70 font-medium text-center leading-tight group-hover:text-white transition-colors">
+                    {tile.name}
+                </span>
+                {tile.hotkey && (
+                    <div className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-white/5 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-[8px] font-mono text-white/30">{tile.hotkey.split('+').pop()}</span>
+                    </div>
+                )}
             </motion.div>
         </div>
     );
@@ -637,21 +914,24 @@ function App() {
 
     if (!activeProfile) {
         return (
-            <div className="min-h-screen bg-[#030305] flex flex-col items-center justify-center gap-6">
-                <div className="relative">
+            <div className="min-h-screen flex flex-col items-center justify-center gap-6 relative">
+                <div className="starfield" />
+                <div className="ambient-glow ambient-glow-blue w-[600px] h-[600px] top-0 left-1/4" />
+                <div className="ambient-glow ambient-glow-orange w-[400px] h-[400px] bottom-0 right-1/4" />
+                <div className="relative z-10">
                     <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <Monitor size={20} className="text-blue-500 animate-pulse" />
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
-                    <div className="text-white/40 uppercase tracking-[0.4em] text-[10px] font-bold">VIP Interface Initializing</div>
+                <div className="flex flex-col items-center gap-2 relative z-10">
+                    <div className="text-white/40 uppercase tracking-[0.4em] text-[10px] font-bold">VIP Productivity Deck</div>
                     <div className="text-blue-400/60 text-[9px] uppercase tracking-widest animate-pulse">{initStatus}</div>
                 </div>
                 {!window.electronAPI && (
-                    <div className="mt-8 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-xl">
+                    <div className="mt-8 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-xl relative z-10">
                         <div className="text-red-500 text-[8px] uppercase tracking-widest font-black flex items-center gap-2">
-                            <LucideIcons.AlertTriangle size={12} /> Warning: System Bridge Offline
+                            <AlertTriangle size={12} /> Warning: System Bridge Offline
                         </div>
                     </div>
                 )}
@@ -660,345 +940,249 @@ function App() {
     }
 
     return (
-        <div
-            onClick={unlockAudio}
-            style={{
-                '--accent-color': activeProfile?.settings?.accentColor || '#3b82f6',
-                '--glass-bg': `rgba(255, 255, 255, ${activeProfile?.settings?.transparency / 10 || 0.03})`,
-                '--glass-border': `rgba(255, 255, 255, ${(activeProfile?.settings?.transparency / 10) * 2 || 0.08})`,
-            }}
-            className="h-screen w-screen p-6 flex gap-6 overflow-hidden bg-premium-bg relative"
-        >
-            {/* Background Decorative Blur */}
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/5 blur-[120px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/5 blur-[100px] rounded-full pointer-events-none" />
+        <div onClick={unlockAudio} className="h-screen w-screen flex flex-col overflow-hidden relative">
+            {/* Starfield Background */}
+            <div className="starfield" />
+            
+            {/* Ambient Glow Effects */}
+            <div className="ambient-glow ambient-glow-blue w-[600px] h-[600px] -top-40 left-1/4" />
+            <div className="ambient-glow ambient-glow-orange w-[400px] h-[400px] -bottom-20 right-1/3" />
+            <div className="ambient-glow ambient-glow-blue w-[300px] h-[300px] top-1/2 -right-20" />
 
-            {/* LEFT SIDEBAR */}
-            <AnimatePresence>
-                {!isHyperFocus && (
-                    <motion.aside
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0, width: 280 }}
-                        exit={{ opacity: 0, x: -50, width: 0 }}
-                        className="flex flex-col gap-6 shrink-0 h-full overflow-y-auto pr-2 custom-scroll"
-                    >
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={(e) => handleSidebarDragEnd(e, 'left')}
-                        >
-                            <SortableContext items={leftSidebarOrder} strategy={verticalListSortingStrategy}>
-                                {leftSidebarOrder.map(id => (
-                                    <SortableSidebarItem
-                                        key={id}
-                                        id={id}
-                                        isCollapsed={collapsedPanels[id]}
-                                        onToggle={() => togglePanel(id)}
-                                    >
-                                        {id === 'SmartTriage' && <SmartTriage schedules={schedules} />}
-                                        {id === 'AIConflictResolver' && (
-                                            <AIConflictResolver
-                                                schedules={schedules}
-                                                onUpdateSchedule={handleUpdateSchedule}
-                                            />
-                                        )}
-                                        {id === 'EnergyPeakTime' && <EnergyPeakTime schedules={schedules} />}
-                                    </SortableSidebarItem>
-                                ))}
-                            </SortableContext>
-                        </DndContext>
+            {/* Header */}
+            <header className="relative z-10 px-8 py-4 flex flex-col items-center">
+                <h1 className="text-4xl font-bold tracking-wide">
+                    <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                        VIP Productivity Deck
+                    </span>
+                </h1>
+                <p className="text-white/50 text-sm tracking-widest mt-1">Enterprise-Level Productivity Redefined</p>
+            </header>
 
-                        <div className="glass-panel p-5 mt-auto border-l-2 border-white/10 shrink-0">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
-                                    <Activity size={16} className="text-white/40" />
-                                </div>
-                                <div>
-                                    <p className="text-[9px] text-white/30 uppercase tracking-widest">System Load</p>
-                                    <p className="text-[11px] font-bold text-white/80">OPTIMAL</p>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.aside>
-                )}
-            </AnimatePresence>
+            {/* Main Content */}
+            <div className="flex-1 flex gap-4 px-4 pb-4 relative z-10 overflow-hidden">
+                {/* Left Sidebar */}
+                <aside className="w-72 flex flex-col gap-3 overflow-y-auto custom-scroll">
+                    <SmartNotificationTriage />
+                    <AIConflictResolverPanel />
+                    <EnergyPeakTimePanel />
+                    <WorkflowAutomationPanel />
+                </aside>
 
-            {/* MAIN CENTER SECTION */}
-            <main className="flex-1 flex flex-col gap-6 min-w-0 transition-all duration-500">
-                <header className="flex justify-between items-center glass-panel px-8 py-5 shrink-0 border-t-2 border-white/10">
-                    <div className="flex items-center gap-8">
-                        <div>
-                            <h1 className="text-2xl font-black tracking-tighter text-white">
-                                VIP <span className="text-white/40">Stream Deck</span>
-                            </h1>
-                            <div className="flex items-center gap-2 mt-0.5">
-                                <p className="text-[9px] text-white/20 tracking-[0.4em] uppercase">Productivity Reimagined</p>
-                                <div className="px-1.5 py-0.5 rounded bg-blue-500/20 border border-blue-500/30 text-[8px] font-bold text-blue-400 uppercase tracking-wider">
-                                    Context: {activeProfile?.name || 'Default'}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="relative">
-                            <button
-                                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                                className="glass-panel px-4 py-2 flex items-center gap-3 hover:glass-hover transition-all text-[10px] uppercase tracking-widest font-bold text-blue-400 group"
-                            >
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-                                {activeProfile.name}
-                                <ChevronDown size={14} className={`transition-transform duration-500 ${isProfileMenuOpen ? 'rotate-180' : ''}`} />
-                            </button>
-
-                            <AnimatePresence>
-                                {isProfileMenuOpen && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        className="absolute top-full left-0 mt-3 w-56 glass-panel overflow-hidden z-50 p-1 border border-white/10 shadow-3xl shadow-black"
-                                    >
-                                        {profiles.map(name => (
-                                            <button
-                                                key={name}
-                                                onClick={() => switchProfile(name)}
-                                                className={`w-full text-left px-5 py-3.5 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all ${activeProfile.name.toLowerCase() === name.toLowerCase() ? 'bg-blue-500/10 text-blue-400' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
-                                            >
-                                                {name}
-                                            </button>
-                                        ))}
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    </div>
-
-                    <div className="flex gap-4 items-center">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20">
-                            <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                            <span className="text-[9px] text-green-500/80 font-mono font-bold tracking-widest uppercase">Sync Active</span>
-                        </div>
-                        <button
-                            onClick={() => setIsEditMode(!isEditMode)}
-                            className={`p-2 rounded-lg transition-all ${isEditMode ? 'bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]' : 'glass-panel text-white/20 hover:text-white'}`}
-                        >
-                            <Edit2 size={18} />
-                        </button>
-                        <button
-                            onClick={() => setIsSettingsOpen(true)}
-                            className="p-2 rounded-lg glass-panel hover:glass-hover transition-all text-white/20 hover:text-white"
-                        >
-                            <Settings size={18} />
-                        </button>
-                    </div>
-                </header>
-
-                {/* Central Dashboard Area */}
-                <div className="h-fit max-h-[40%] min-h-[200px] glass-panel p-8 relative overflow-hidden flex flex-col shrink-0">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-
-                    <div className="flex justify-between items-center mb-8 shrink-0">
-                        <div className="flex items-center gap-4">
-                            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                <Clock size={16} />
-                            </div>
-                            <div>
-                                <p className="text-[10px] text-white/30 uppercase tracking-widest leading-none">
-                                    {nextTaskName ? `Next Task: ${nextTaskName}` : 'No Upcoming Tasks'}
-                                </p>
-                                <p className="text-xl font-black text-white tracking-tighter mt-1">{countdown}</p>
-                            </div>
-                        </div>
-                    </div>
-                    {navigationStack.length > 0 && (
-                        <button
-                            onClick={navigateUp}
-                            className="glass-panel px-4 py-2 text-[9px] uppercase tracking-widest font-bold text-blue-400 hover:text-white flex items-center gap-2"
-                        >
-                            <LucideIcons.ArrowLeft size={12} /> Back to {navigationStack.length === 1 ? 'Main' : 'Previous'}
-                        </button>
-                    )}
-                    <button
-                        onClick={() => setIsHyperFocus(!isHyperFocus)}
-                        className={`glass-panel px-4 py-2 text-[9px] uppercase tracking-widest font-bold flex items-center gap-2 transition-all ${isHyperFocus ? 'bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]' : 'text-white/40 hover:text-white/70'}`}
-                    >
-                        <Maximize2 size={12} /> {isHyperFocus ? 'Exit Focus' : 'Hyper Focus'}
-                    </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto pr-2 custom-scroll">
-                    <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <SortableContext
-                            items={currentTiles}
-                            strategy={rectSortingStrategy}
-                        >
-                            <div className="grid grid-cols-4 md:grid-cols-5 gap-6">
-                                {currentTiles.map((tile) => (
-                                    <div key={tile.id} className="relative group">
-                                        <SortableTile
-                                            tile={tile}
-                                            volume={volume}
-                                            onEnterFolder={() => enterFolder(tile)}
-                                            onUiAction={handleUiAction}
-                                        />
-                                        {isEditMode && (
-                                            <button
-                                                onClick={() => setEditingTile(tile)}
-                                                className="absolute -top-2 -right-2 p-2 bg-blue-500 text-white rounded-full shadow-lg z-20 hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100"
-                                            >
-                                                <Edit2 size={12} />
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-
-                                {/* ADD NEW TILE BUTTON */}
-                                <motion.div
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => setIsAddingTile(true)}
-                                    className="relative glass group cursor-pointer aspect-square rounded-3xl flex flex-col items-center justify-center gap-3 border border-white/5 border-dashed hover:border-blue-500/50 hover:bg-blue-500/5 transition-all"
+                {/* Center Content */}
+                <main className="flex-1 flex flex-col gap-4 min-w-0">
+                    {/* Main Grid Panel */}
+                    <div className="flex-1 glass-panel p-6 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-orange-500/5 pointer-events-none" />
+                        
+                        {/* Profile Selector & Controls */}
+                        <div className="flex justify-between items-center mb-4 relative z-10">
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                                    className="glass px-4 py-2 rounded-lg flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
                                 >
-                                    <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 group-hover:text-blue-400 group-hover:bg-blue-500/10 transition-all">
-                                        <Plus size={24} />
-                                    </div>
-                                    <span className="text-[9px] uppercase tracking-widest font-bold text-white/20 group-hover:text-white/60">Add Button</span>
-                                </motion.div>
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                </div>
+                                    <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                                    {activeProfile.name}
+                                    <ChevronDown size={14} className={`transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''}`} />
+                                </button>
 
-                {/* FOOTER */}
-                <footer className="glass-panel px-8 py-5 flex justify-between items-center shrink-0 border-b-2 border-white/10">
-                    <div className="flex items-center gap-4">
-                        <div className="text-[9px] text-white/20 tracking-[0.4em] uppercase font-bold">
-                            Build v2.0.0 <span className="text-white/10 ml-2">VIP TRANSFORMATION</span>
+                                <AnimatePresence>
+                                    {isProfileMenuOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className="absolute top-full left-0 mt-2 w-48 glass-panel p-1 z-50"
+                                        >
+                                            {profiles.map(name => (
+                                                <button
+                                                    key={name}
+                                                    onClick={() => switchProfile(name)}
+                                                    className={`w-full text-left px-4 py-2 rounded-lg text-sm transition-all ${activeProfile.name.toLowerCase() === name.toLowerCase() ? 'bg-blue-500/20 text-blue-400' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}
+                                                >
+                                                    {name}
+                                                </button>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setIsEditMode(!isEditMode)}
+                                    className={`p-2 rounded-lg transition-all ${isEditMode ? 'bg-blue-500 text-white' : 'glass text-white/40 hover:text-white'}`}
+                                >
+                                    <Edit2 size={16} />
+                                </button>
+                                <button
+                                    onClick={() => setIsSettingsOpen(true)}
+                                    className="p-2 rounded-lg glass text-white/40 hover:text-white transition-all"
+                                >
+                                    <Settings size={16} />
+                                </button>
+                            </div>
                         </div>
-                        <button
-                            onClick={() => window.electronAPI.openMiniMode()}
-                            className="text-[9px] text-blue-400/50 hover:text-blue-400 uppercase tracking-widest border border-blue-400/20 px-2 py-1 rounded hover:bg-blue-400/10 transition-colors flex items-center gap-1"
-                        >
-                            <Minimize2 size={10} /> Mini
-                        </button>
+
+                        {/* Navigation */}
+                        {navigationStack.length > 0 && (
+                            <button
+                                onClick={navigateUp}
+                                className="mb-4 px-3 py-1.5 rounded-lg glass text-sm text-blue-400 hover:text-white flex items-center gap-2"
+                            >
+                                <ArrowLeft size={14} /> Back
+                            </button>
+                        )}
+
+                        {/* Productivity Grid */}
+                        <div className="grid grid-cols-4 gap-3 relative z-10 overflow-y-auto custom-scroll" style={{ maxHeight: 'calc(100% - 80px)' }}>
+                            {currentTiles.length > 0 ? (
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <SortableContext items={currentTiles} strategy={rectSortingStrategy}>
+                                        {currentTiles.map((tile) => (
+                                            <div key={tile.id} className="relative group">
+                                                <SortableTile
+                                                    tile={tile}
+                                                    volume={volume}
+                                                    onEnterFolder={() => enterFolder(tile)}
+                                                    onUiAction={handleUiAction}
+                                                />
+                                                {isEditMode && (
+                                                    <button
+                                                        onClick={() => setEditingTile(tile)}
+                                                        className="absolute -top-1 -right-1 p-1.5 bg-blue-500 text-white rounded-full shadow-lg z-20 hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100"
+                                                    >
+                                                        <Edit2 size={10} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
+                            ) : (
+                                <>
+                                    {productivityButtons.slice(0, 4).map(btn => (
+                                        <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
+                                    ))}
+                                    
+                                    <ProductivityButton button={productivityButtons[4]} onClick={() => {}} />
+                                    
+                                    {/* Timer Display */}
+                                    <div className="col-span-2 timer-display">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Clock size={16} className="text-orange-400" />
+                                            <span className="text-xs text-white/50">Next Task in</span>
+                                        </div>
+                                        <div className="text-3xl font-bold text-orange-400 tracking-wider">{countdown}</div>
+                                    </div>
+                                    
+                                    <ProductivityButton button={productivityButtons[5]} onClick={() => {}} />
+                                    
+                                    {productivityButtons.slice(6).map(btn => (
+                                        <ProductivityButton key={btn.id} button={btn} onClick={() => console.log(btn.name)} />
+                                    ))}
+                                </>
+                            )}
+
+                            {/* Add Button */}
+                            <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setIsAddingTile(true)}
+                                className="productivity-btn border-dashed border-white/20 hover:border-blue-500/50"
+                            >
+                                <Plus size={24} className="text-white/30" />
+                                <span className="text-[10px] text-white/30">Add Button</span>
+                            </motion.div>
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-10">
-                        <div className="flex items-center gap-4">
-                            <Volume2 size={16} className="text-white/30" />
-                            <div className="w-32 h-1 bg-white/5 rounded-full relative group cursor-pointer">
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={volume}
-                                    onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                    className="absolute inset-0 w-full h-full opacity-0 z-10 cursor-pointer"
-                                />
-                                <motion.div
-                                    initial={false}
-                                    animate={{ width: `${volume * 100}%` }}
-                                    className="h-full bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.4)]"
-                                />
-                            </div>
-                        </div>
+                    {/* Bottom Panels */}
+                    <div className="flex gap-3">
+                        <PredictiveTaskDeck />
+                        <FocusEnhancementPanel />
+                        <InvacySchedulingPanel />
+                        <AdvancedSchedulingPanel />
+                    </div>
+                </main>
 
-                        <div className="flex gap-8">
-                            <div className="flex flex-col items-end">
-                                <span className="text-[8px] text-white/20 uppercase tracking-[0.2em] mb-1">Processor</span>
+                {/* Right Sidebar */}
+                <aside className="w-72 flex flex-col gap-3 overflow-y-auto custom-scroll">
+                    <MoodDetectionPanel />
+                    <CrossDeviceSyncPanel />
+                    <VoiceInteractionPanel />
+                    
+                    {/* System Stats */}
+                    <div className="side-panel mt-auto">
+                        <div className="flex items-center gap-3 mb-3">
+                            <Activity size={14} className="text-blue-400" />
+                            <span className="text-xs text-white/70">System Status</span>
+                        </div>
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-white/50">CPU</span>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-16 h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
                                         <motion.div
                                             animate={{ width: `${systemStats.cpu}%` }}
                                             className={`h-full ${systemStats.cpu > 80 ? 'bg-red-500' : 'bg-blue-500'}`}
                                         />
                                     </div>
-                                    <span className="text-[9px] font-mono text-white/40">{systemStats.cpu}%</span>
+                                    <span className="text-[10px] text-white/50 w-8">{systemStats.cpu}%</span>
                                 </div>
                             </div>
-                            <div className="flex flex-col items-end">
-                                <span className="text-[8px] text-white/20 uppercase tracking-[0.2em] mb-1">Memory</span>
+                            <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-white/50">Memory</span>
                                 <div className="flex items-center gap-2">
-                                    <div className="w-16 h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
                                         <motion.div
                                             animate={{ width: `${systemStats.mem}%` }}
-                                            className={`h-full ${systemStats.mem > 80 ? 'bg-red-500' : 'bg-pink-500'}`}
+                                            className={`h-full ${systemStats.mem > 80 ? 'bg-red-500' : 'bg-purple-500'}`}
                                         />
                                     </div>
-                                    <span className="text-[9px] font-mono text-white/40">{systemStats.mem}%</span>
+                                    <span className="text-[10px] text-white/50 w-8">{systemStats.mem}%</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </footer>
-            </main>
+                </aside>
+            </div>
 
-            {/* RIGHT SIDEBAR */}
-            <AnimatePresence>
-                {!isHyperFocus && (
-                    <motion.aside
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0, width: 300 }}
-                        exit={{ opacity: 0, x: 50, width: 0 }}
-                        className="flex flex-col gap-6 shrink-0 h-full overflow-y-auto pr-2 custom-scroll"
+            {/* Footer */}
+            <footer className="relative z-10 px-8 py-2 flex justify-between items-center border-t border-white/5">
+                <div className="flex items-center gap-4">
+                    <span className="text-[10px] text-white/30">Build v2.0.0</span>
+                    <button
+                        onClick={() => window.electronAPI.openMiniMode()}
+                        className="text-[10px] text-blue-400/50 hover:text-blue-400 flex items-center gap-1"
                     >
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={(e) => handleSidebarDragEnd(e, 'right')}
-                        >
-                            <SortableContext items={rightSidebarOrder} strategy={verticalListSortingStrategy}>
-                                {rightSidebarOrder.map(id => (
-                                    <SortableSidebarItem
-                                        key={id}
-                                        id={id}
-                                        isCollapsed={collapsedPanels[id]}
-                                        onToggle={() => togglePanel(id)}
-                                    >
-                                        {id === 'MoodDetection' && <MoodDetection systemStats={systemStats} />}
-                                        {id === 'SchedulePanel' && (
-                                            <SchedulePanel
-                                                schedules={schedules}
-                                                onAddSchedule={(s) => setSchedules([...schedules, s])}
-                                                onDeleteSchedule={(id) => setSchedules(schedules.filter(s => s.id !== id))}
-                                            />
-                                        )}
-                                        {id === 'NetworkStatus' && <NetworkStatus />}
-                                        {id === 'GamificationRewards' && <GamificationRewards actionCount={actionCount} />}
-                                        {id === 'VoiceCommand' && <VoiceCommand />}
-                                    </SortableSidebarItem>
-                                ))}
-                            </SortableContext>
-                        </DndContext>
-
-                        <div className="glass-panel p-6 mt-auto border-r-2 border-white/10 shrink-0">
-                            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-4 text-right">Device Ecosystem</p>
-                            <div className="flex justify-end gap-3 text-white/40">
-                                <div className="p-2.5 rounded-xl glass hover:text-white transition-colors cursor-pointer">
-                                    <LucideIcons.Smartphone size={16} />
-                                </div>
-                                <div className="p-2.5 rounded-xl glass hover:text-white transition-colors cursor-pointer">
-                                    <LucideIcons.Laptop size={16} />
-                                </div>
-                                <div className="p-2.5 rounded-xl glass hover:text-white transition-colors cursor-pointer">
-                                    <LucideIcons.Tablet size={16} />
-                                </div>
-                            </div>
-                        </div>
-                    </motion.aside>
-                )}
-            </AnimatePresence>
-
-            {/* AI COMPANION */}
-            <FocusCompanion
-                actionCount={actionCount}
-                activeProfile={activeProfile}
-                systemStats={systemStats}
-            />
+                        <Minimize2 size={10} /> Mini Mode
+                    </button>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Volume2 size={14} className="text-white/30" />
+                    <div className="w-24 h-1 bg-white/10 rounded-full relative">
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={volume}
+                            onChange={(e) => setVolume(parseFloat(e.target.value))}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        <motion.div
+                            animate={{ width: `${volume * 100}%` }}
+                            className="h-full bg-blue-500 rounded-full"
+                        />
+                    </div>
+                </div>
+            </footer>
 
             {/* STICKY NOTE / ALERT OVERLAY */}
             <AnimatePresence>

@@ -677,19 +677,22 @@ function App() {
                 getProfiles: async () => ['default', 'work'],
                 loadProfile: async (name) => {
                     // Return mock profile data for browser testing with enterprise-ready actions
+                    // Action types must match Electron main.js: url, app, shell, notification, ui, log
                     return {
                         name: name,
                         tiles: [
-                            { id: 'tile-1', name: 'Email Workflow', icon: 'Mail', color: 'blue', actions: [{ type: 'open', value: 'mailto:' }, { type: 'log', value: 'Opening email client' }] },
-                            { id: 'tile-2', name: 'Focus Mode', icon: 'Eye', color: 'blue', actions: [{ type: 'ui', action: 'focus-mode' }, { type: 'log', value: 'Focus mode activated' }] },
-                            { id: 'tile-3', name: 'Quick Break', icon: 'Coffee', color: 'orange', actions: [{ type: 'timer', duration: 300 }, { type: 'log', value: 'Break timer started' }] },
-                            { id: 'tile-4', name: 'Quick Renner', icon: 'Zap', color: 'orange', actions: [{ type: 'log', value: 'Quick task runner activated' }] },
-                            { id: 'tile-5', name: 'Weekly Report', icon: 'FileText', color: 'blue', actions: [{ type: 'log', value: 'Generating weekly report' }] },
-                            { id: 'tile-6', name: 'Mood Schedule', icon: 'Calendar', color: 'purple', actions: [{ type: 'log', value: 'Opening mood-based scheduler' }] },
-                            { id: 'tile-7', name: 'Start Stream', icon: 'Play', color: 'blue', actions: [{ type: 'log', value: 'Starting stream' }] },
-                            { id: 'tile-8', name: 'Smart Schedule', icon: 'Brain', color: 'cyan', actions: [{ type: 'log', value: 'AI scheduling activated' }] },
-                            { id: 'tile-9', name: 'Start Webinar', icon: 'Video', color: 'blue', actions: [{ type: 'log', value: 'Starting webinar' }] },
-                            { id: 'tile-10', name: 'Team Sync', icon: 'Users', color: 'green', actions: [{ type: 'log', value: 'Team sync initiated' }] },
+                            { id: 'tile-1', name: 'Email Workflow', icon: 'Mail', color: 'text-blue-400', actions: [{ type: 'url', value: 'mailto:team@company.com' }, { type: 'log', value: 'Opening email client' }] },
+                            { id: 'tile-2', name: 'Focus Mode', icon: 'Maximize2', color: 'text-purple-400', actions: [{ type: 'ui', action: 'toggleHyperFocus' }, { type: 'log', value: 'Focus mode toggled' }] },
+                            { id: 'tile-3', name: 'Quick Break', icon: 'Coffee', color: 'text-orange-400', actions: [{ type: 'notification', title: 'Break Time', body: 'Take a 5 minute break!' }, { type: 'log', value: 'Break reminder sent' }] },
+                            { id: 'tile-4', name: 'Terminal', icon: 'Terminal', color: 'text-yellow-400', actions: [{ type: 'app', value: 'terminal' }] },
+                            { id: 'tile-5', name: 'Chrome', icon: 'Chrome', color: 'text-blue-400', actions: [{ type: 'app', value: 'chrome' }] },
+                            { id: 'tile-6', name: 'GitHub', icon: 'Github', color: 'text-white', actions: [{ type: 'url', value: 'https://github.com' }] },
+                            { id: 'tile-7', name: 'Spotify', icon: 'Music', color: 'text-green-500', actions: [{ type: 'url', value: 'https://open.spotify.com' }] },
+                            { id: 'tile-8', name: 'Gmail', icon: 'Mail', color: 'text-red-400', actions: [{ type: 'url', value: 'https://mail.google.com' }] },
+                            { id: 'tile-9', name: 'YouTube', icon: 'Youtube', color: 'text-red-500', actions: [{ type: 'url', value: 'https://youtube.com' }] },
+                            { id: 'tile-10', name: 'Calculator', icon: 'Calculator', color: 'text-cyan-400', actions: [{ type: 'app', value: 'calc' }] },
+                            { id: 'tile-11', name: 'WhatsApp', icon: 'MessageSquare', color: 'text-emerald-400', actions: [{ type: 'url', value: 'https://web.whatsapp.com' }] },
+                            { id: 'tile-12', name: 'Slack', icon: 'Hash', color: 'text-purple-400', actions: [{ type: 'url', value: 'https://slack.com' }] },
                         ],
                         schedules: [
                             { id: 'sched-1', title: 'Team Standup', startTime: '09:00', endTime: '09:30', completed: false },
